@@ -8,25 +8,22 @@ window.Dep = class Dep {
   }
   depend(){
     if(activeUpdate){
-
+      this.subscriber.add(activeUpdate)
     }
   }
   notify(){
-    
+    this.subscriber.forEach(sub => sub())
   }
 }
-let activeUpdate
+let activeUpdate = null
 
-function autorun (update) {
   // Implement this!
-  function wrappedUpdate () {
+function autorun (update) {
+  const wrappedUpdate = () => {
     activeUpdate = wrappedUpdate
     update()
     activeUpdate = null
   }
+  wrappedUpdate()
 }
-
-autorun(() => {
-  activeUpdate
-})
 </script>
